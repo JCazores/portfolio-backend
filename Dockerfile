@@ -14,9 +14,6 @@ RUN composer install --no-dev --optimize-autoloader
 
 RUN php artisan storage:link || true
 
-ENV FRANKENPHP_CONFIG="listen :8080"
-ENV SERVER_NAME=":8080"
-
 EXPOSE 8080
 
-ENTRYPOINT ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
+CMD sh -c "php artisan serve --host=0.0.0.0 --port="
