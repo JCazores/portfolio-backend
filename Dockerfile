@@ -22,5 +22,6 @@ WORKDIR /app
 RUN composer install --no-dev --optimize-autoloader
 
 ENV SERVER_NAME=":8080"
+ENV APP_ENV=production
 
-EXPOSE 8080
+CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
