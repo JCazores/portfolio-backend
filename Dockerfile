@@ -7,6 +7,8 @@ RUN install-php-extensions \
     bcmath \
     opcache
 
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
 COPY . /app
 
 WORKDIR /app
