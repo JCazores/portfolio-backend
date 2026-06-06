@@ -5,7 +5,8 @@ RUN install-php-extensions \
     mbstring \
     xml \
     bcmath \
-    opcache
+    opcache \
+    zip
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -13,7 +14,7 @@ COPY . /app
 
 WORKDIR /app
 
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
 ENV SERVER_NAME=":8080"
 
