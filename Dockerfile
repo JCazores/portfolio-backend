@@ -1,27 +1,22 @@
 ﻿FROM dunglas/frankenphp
 
-RUN apt-get update && apt-get install -y \
-    unzip \
-    zip \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y unzip zip && rm -rf /var/lib/apt/lists/*
 
-RUN install-php-extensions \
-    pdo_mysql \
-    mbstring \
-    xml \
-    bcmath \
-    opcache \
-    zip
+RUN install-php-extensions pdo_mysql mbstring xml bcmath opcache zip
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-COPY . /app
-
 WORKDIR /app
+
+COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-ENV SERVER_NAME=":8080"
-ENV APP_ENV=production
+RUN php artisan storage:link || true
 
-CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
+ENV FRANKENPHP_CONFIG="listen :8080"
+ENV SERVER_NAME=":8080"
+
+EXPOSE 8080
+
+ENTRYPOINT ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
