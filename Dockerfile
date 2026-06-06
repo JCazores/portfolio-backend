@@ -1,5 +1,10 @@
 ﻿FROM dunglas/frankenphp
 
+RUN apt-get update && apt-get install -y \
+    unzip \
+    zip \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN install-php-extensions \
     pdo_mysql \
     mbstring \
@@ -14,7 +19,7 @@ COPY . /app
 
 WORKDIR /app
 
-RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+RUN composer install --no-dev --optimize-autoloader
 
 ENV SERVER_NAME=":8080"
 
